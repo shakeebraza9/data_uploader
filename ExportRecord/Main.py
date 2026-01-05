@@ -6,8 +6,10 @@ import requests
 import urllib3
 from datetime import datetime
 from dotenv import load_dotenv
-import ExportRecord.function as Fun
-from ExportRecord.ConnectSheet import DataSet 
+from ExportRecord.DataFomater import DataFomater 
+# from ExportRecord.ConnectSheet import DataSet 
+from config import PUBLIC_PATH
+
 
 API_BASE_URL = os.getenv("API_BASE_URL")
 LOGIN_EMAIL = os.getenv("LOGIN_EMAIL")
@@ -16,7 +18,9 @@ LOG_FILE = "auction_error.log"
 API_ENDPOINT = f"{API_BASE_URL}/api/cruds/auctions"
 API_ENDPOINT_PLATEFROM = f"{API_BASE_URL}/api/cruds/platform"
 ERROR_LOG_FILE = "error_log.txt"
-class Upload:
+
+
+class Main:
     
     def log_error(sheet_id, error_type, response=None):
         with open(LOG_FILE, "a", encoding="utf-8") as f:
@@ -67,10 +71,10 @@ class Upload:
         response.raise_for_status()
         data = response.json().get("data", [])
 
-        auction_norm = Upload.normalize(auction_house)
+        auction_norm = Main.normalize(auction_house)
 
         for item in data:
-            item_norm = Upload.normalize(item["name"])
+            item_norm = Main.normalize(item["name"])
             for key, names in ALIASES.items():
                 if auction_norm in names and key in item_norm:
                     return item["id"]
@@ -79,7 +83,7 @@ class Upload:
 
         return None
     
-    def process_csvs_to_json(folder_path, dataset: DataSet):
+    def process_csvs_to_json(folder_path):
         result = []
 
         for filename in os.listdir(folder_path):
@@ -98,7 +102,8 @@ class Upload:
             with open(csv_path, newline="", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    mapped_row = Fun.DataFields(dataset, row)
+                    dataFeild = DataFomater()
+                    mapped_row = dataFeild.DataFields(row)
                     rows.append(mapped_row)
                     # print(rows)
 
@@ -187,7 +192,7 @@ class Upload:
 
             if r.status_code >= 400:
                 print(f"❌ API Error {r.status_code} on sheet {sheet_id}")
-                Upload.log_error(
+                Main.log_error(
                     sheet_id=sheet_id,
                     error_type=f"HTTP {r.status_code}",
                     response=r.json() if r.headers.get("content-type","").startswith("application/json") else r.text
@@ -199,6 +204,27 @@ class Upload:
 
         except Exception as e:
             print("❌ Exception:", sheet_id)
-            Upload.log_error(sheet_id, "EXCEPTION", str(e))
+            Main.log_error(sheet_id, "EXCEPTION", str(e))
             return None, None
 
+
+
+    def Run():
+        
+
+        folder_path = os.path.join(PUBLIC_PATH, "csv")
+        folder_path = folder_path.replace("/", "\\")
+        # dataset = DataSet()
+        # dataSet = dataset.data
+        auctions = Main.process_csvs_to_json(folder_path)
+    
+        # print(auctions)
+        LoginToken = Main.login_and_get_token() 
+
+
+
+        for auction in auctions:
+            platrfrom_id = Main.getPlatefromID(auction["platform"],LoginToken)
+            auction["platform_id"] = platrfrom_id
+            Main.post_or_update(auction, LoginToken)
+            time.sleep(3)   
