@@ -5,6 +5,9 @@ from datetime import datetime
 from dotenv import load_dotenv
 from ExportRecord.ConnectSheet import DataSet 
 from ExportRecord.Upload import Upload as Up
+
+from CSVGenerator import Main
+
 LOG_FILE = "auction_error.log"
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
@@ -18,24 +21,25 @@ BASE_FOLDER = os.getenv("BASE_FOLDER", r"D:\python")
 
 
 
+Main.main()
 
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    folder_path = os.path.join(BASE_FOLDER, "final_csvs")
-    folder_path = folder_path.replace("/", "\\")
-    dataset = DataSet()
-    dataSet = dataset.data
-    auctions = Up.process_csvs_to_json(folder_path, dataSet)
+#     folder_path = os.path.join(BASE_FOLDER, "final_csvs")
+#     folder_path = folder_path.replace("/", "\\")
+#     dataset = DataSet()
+#     dataSet = dataset.data
+#     auctions = Up.process_csvs_to_json(folder_path, dataSet)
   
-    # print(auctions)
-    LoginToken = Up.login_and_get_token() 
+#     # print(auctions)
+#     LoginToken = Up.login_and_get_token() 
 
 
 
-    for auction in auctions:
-        platrfrom_id = Up.getPlatefromID(auction["platform"],LoginToken)
-        auction["platform_id"] = platrfrom_id
-        Up.post_or_update(auction, LoginToken)
-        time.sleep(3)   
+#     for auction in auctions:
+#         platrfrom_id = Up.getPlatefromID(auction["platform"],LoginToken)
+#         auction["platform_id"] = platrfrom_id
+#         Up.post_or_update(auction, LoginToken)
+#         time.sleep(3)   

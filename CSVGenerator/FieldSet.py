@@ -19,6 +19,8 @@ def safe_int(value, default=""):
         return int(float(value))
     except (ValueError, TypeError):
         return default
+    
+
 def to_int1(value, default=""):
     try:
         if value is None:
@@ -36,7 +38,13 @@ def to_int1(value, default=""):
 
         return default
 
-def DataFields(data):
+
+
+
+
+
+
+def FieldSet(data):
 
 
     def to_int(value, default=""):
