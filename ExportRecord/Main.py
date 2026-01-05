@@ -11,16 +11,22 @@ from ExportRecord.DataPrefix import DataPrefix
 from config import PUBLIC_PATH
 
 
-API_BASE_URL = os.getenv("API_BASE_URL")
-LOGIN_EMAIL = os.getenv("LOGIN_EMAIL")
-LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD")
-LOG_FILE = "auction_error.log"
-API_ENDPOINT = f"{API_BASE_URL}/api/cruds/auctions"
-API_ENDPOINT_PLATEFROM = f"{API_BASE_URL}/api/cruds/platform"
-ERROR_LOG_FILE = "error_log.txt"
 
 
 class Main:
+
+    
+    API_BASE_URL = os.getenv("API_BASE_URL")
+    LOGIN_EMAIL = os.getenv("LOGIN_EMAIL")
+    LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD")
+    LOG_FILE = "auction_error.log"
+    API_ENDPOINT = f"{API_BASE_URL}/api/cruds/auctions"
+    API_ENDPOINT_PLATEFROM = f"{API_BASE_URL}/api/cruds/platform"
+    ERROR_LOG_FILE = "error_log.txt"
+
+
+
+
     @staticmethod
     def log_error(sheet_id, error_type, response=None):
         with open(LOG_FILE, "a", encoding="utf-8") as f:
@@ -63,7 +69,7 @@ class Main:
         }
 
         response = requests.get(
-            API_ENDPOINT_PLATEFROM,
+            Main.API_ENDPOINT_PLATEFROM,
             headers=headers,
             verify=False,
             timeout=30
@@ -124,10 +130,10 @@ class Main:
 
     @staticmethod
     def login_and_get_token():
-        url = f"{API_BASE_URL}/api/auth/login"
+        url = f"{Main.API_BASE_URL}/api/auth/login"
         payload = {
-            "email": LOGIN_EMAIL,
-            "password": LOGIN_PASSWORD
+            "email": Main.LOGIN_EMAIL,
+            "password": Main.LOGIN_PASSWORD
         }
 
         try:
@@ -157,7 +163,7 @@ class Main:
 
         try:
 
-            check_url = f"{API_ENDPOINT}?table_id={sheet_id}"
+            check_url = f"{Main.API_ENDPOINT}?table_id={sheet_id}"
             check = requests.get(
                 check_url,
                 headers=headers,
@@ -176,7 +182,7 @@ class Main:
                 print(f"🔄 Updating auction sheet {sheet_id}")
 
                 r = requests.post(
-                    f"{API_ENDPOINT}/{auction_db_id}",
+                    f"{Main.API_ENDPOINT}/{auction_db_id}",
                     json=payload,
                     headers=headers,
                     verify=False,
@@ -187,7 +193,7 @@ class Main:
                 print(f"🆕 Creating auction sheet {sheet_id}")
 
                 r = requests.post(
-                    API_ENDPOINT,
+                    Main.API_ENDPOINT,
                     json=payload,
                     headers=headers,
                     verify=False,
@@ -217,18 +223,16 @@ class Main:
 
         DataPrefix.GenJSon()
 
-        # folder_path = os.path.join(PUBLIC_PATH, "csv")
-        # folder_path = folder_path.replace("/", "\\")
-        # auctions = Main.process_csvs_to_json(folder_path)
-        print("hello")
-    
-        # # print(auctions)
-        # LoginToken = Main.login_and_get_token() 
+        folder_path = os.path.join(PUBLIC_PATH, "csv")
+        folder_path = folder_path.replace("/", "\\")
+        auctions = Main.process_csvs_to_json(folder_path)
+        
+        LoginToken = Main.login_and_get_token() 
 
 
 
-        # for auction in auctions:
-        #     platrfrom_id = Main.getPlatefromID(auction["platform"],LoginToken)
-        #     auction["platform_id"] = platrfrom_id
-        #     Main.post_or_update(auction, LoginToken)
-        #     time.sleep(3)   
+        for auction in auctions:
+            platrfrom_id = Main.getPlatefromID(auction["platform"],LoginToken)
+            auction["platform_id"] = platrfrom_id
+            Main.post_or_update(auction, LoginToken)
+            time.sleep(3)   

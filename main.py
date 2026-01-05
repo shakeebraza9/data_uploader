@@ -1,14 +1,17 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 import urllib3
 import time
 from datetime import datetime
-from dotenv import load_dotenv
+
 from CSVGenerator.Main import Main
 from ExportRecord.Main import Main as ExportRecord
 
 LOG_FILE = "auction_error.log"
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-load_dotenv()
+
 
 
 
