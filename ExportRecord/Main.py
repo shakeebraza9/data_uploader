@@ -7,7 +7,7 @@ import urllib3
 from datetime import datetime
 from dotenv import load_dotenv
 from ExportRecord.DataFomater import DataFomater 
-# from ExportRecord.ConnectSheet import DataSet 
+from ExportRecord.DataPrefix import DataPrefix
 from config import PUBLIC_PATH
 
 
@@ -214,10 +214,12 @@ class Main:
 
     @staticmethod
     def Run():
-        
-        folder_path = os.path.join(PUBLIC_PATH, "csv")
-        folder_path = folder_path.replace("/", "\\")
-        auctions = Main.process_csvs_to_json(folder_path)
+
+        DataPrefix.GenJSon()
+
+        # folder_path = os.path.join(PUBLIC_PATH, "csv")
+        # folder_path = folder_path.replace("/", "\\")
+        # auctions = Main.process_csvs_to_json(folder_path)
         print("hello")
     
         # # print(auctions)

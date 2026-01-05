@@ -1,0 +1,9 @@
+{
+    "auto/manual mode": "Automatic",
+    "cvt": "Automatic",
+    "cvt/manual mode": "Automatic",
+    "semi automatic": "Semi-Automatic",
+    "dsg": "Semi-Automatic",
+    "auto clutch": "Manual",
+    "manual transmission": "Manual"
+}

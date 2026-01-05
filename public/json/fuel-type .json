@@ -1,0 +1,23 @@
+{
+    "diesel/hybrid": "Hybrid",
+    "petrol/hybrid": "Hybrid",
+    "petrol/electric": "Hybrid",
+    "diesel/electric": "Hybrid",
+    "petrol/lpg": "Other",
+    "bi-fuel": "Other",
+    "gas": "Other",
+    "bi fuel": "Other",
+    "hydrogen": "Other",
+    "natural gas": "Other",
+    "not specified": null,
+    "not applicable": null,
+    "none": null,
+    "hybrid electric": "Hybrid",
+    "diesel hybrid": "Hybrid",
+    "petrol hybrid": "Hybrid",
+    "petrol electric": "Hybrid",
+    "diesel electric": "Hybrid",
+    "petrol lpg": "Hybrid",
+    "petrol/plugin electric hybrid": "Hybrid",
+    "petrol/electric hybrid": "Hybrid"
+}
