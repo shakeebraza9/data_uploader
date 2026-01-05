@@ -11,3 +11,4 @@ LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD")
 LOG_FILE = "auction_error.log"
 API_ENDPOINT = f"{API_BASE_URL}/api/cruds/auctions"
 API_ENDPOINT_PLATEFROM = f"{API_BASE_URL}/api/cruds/platform"
+GOOGLE_SHEET_LINK = os.getenv("GOOGLE_SHEET_LINK")

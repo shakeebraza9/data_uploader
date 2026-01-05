@@ -21,7 +21,7 @@ ERROR_LOG_FILE = "error_log.txt"
 
 
 class Main:
-    
+    @staticmethod
     def log_error(sheet_id, error_type, response=None):
         with open(LOG_FILE, "a", encoding="utf-8") as f:
             f.write("=" * 80 + "\n")
@@ -38,12 +38,13 @@ class Main:
 
             f.write("\n\n")
 
+    @staticmethod
     def normalize(text):
         text = text.lower()
         text = re.sub(r"(auction|auctions|car|cars)", "", text)
         return text.strip()
 
-
+    @staticmethod
     def getPlatefromID(auction_house, LoginToken):
         if not auction_house:
             return None
@@ -83,6 +84,8 @@ class Main:
 
         return None
     
+    
+    @staticmethod
     def process_csvs_to_json(folder_path):
         result = []
 
@@ -102,8 +105,8 @@ class Main:
             with open(csv_path, newline="", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    dataFeild = DataFomater()
-                    mapped_row = dataFeild.DataFields(row)
+                    dataFeild = DataFomater(row)
+                    mapped_row = dataFeild.Render()
                     rows.append(mapped_row)
                     # print(rows)
 
@@ -119,6 +122,7 @@ class Main:
         # print(result)
         return result
 
+    @staticmethod
     def login_and_get_token():
         url = f"{API_BASE_URL}/api/auth/login"
         payload = {
@@ -141,7 +145,7 @@ class Main:
             print("❌ Login failed:", e)
             exit()
     
-    
+    @staticmethod
     def post_or_update(payload, token):
         headers = {
             "Accept": "application/json",
@@ -208,23 +212,21 @@ class Main:
             return None, None
 
 
-
+    @staticmethod
     def Run():
         
-
         folder_path = os.path.join(PUBLIC_PATH, "csv")
         folder_path = folder_path.replace("/", "\\")
-        # dataset = DataSet()
-        # dataSet = dataset.data
         auctions = Main.process_csvs_to_json(folder_path)
+        print("hello")
     
-        # print(auctions)
-        LoginToken = Main.login_and_get_token() 
+        # # print(auctions)
+        # LoginToken = Main.login_and_get_token() 
 
 
 
-        for auction in auctions:
-            platrfrom_id = Main.getPlatefromID(auction["platform"],LoginToken)
-            auction["platform_id"] = platrfrom_id
-            Main.post_or_update(auction, LoginToken)
-            time.sleep(3)   
+        # for auction in auctions:
+        #     platrfrom_id = Main.getPlatefromID(auction["platform"],LoginToken)
+        #     auction["platform_id"] = platrfrom_id
+        #     Main.post_or_update(auction, LoginToken)
+        #     time.sleep(3)   
