@@ -5,7 +5,7 @@ from datetime import datetime
 
 from config import PUBLIC_PATH
 
-base_dir = r"D:\scraper"
+base_dir = r"D:\scrape"
 
 output_dir = PUBLIC_PATH +'\csv'
 os.makedirs(output_dir, exist_ok=True)

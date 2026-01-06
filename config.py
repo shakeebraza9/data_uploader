@@ -1,5 +1,5 @@
 import os
-import re
+import re,json
 
 # This gets the folder where config.py is (your real project root)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -23,3 +23,14 @@ def slugify(text: str):
     text = re.sub(r"[^\w\s-]", "", text)   # remove special chars
     text = re.sub(r"[\s_-]+", "-", text)   # spaces & underscores → dash
     return text.strip("-")
+
+
+def getJSonPrefixFile(name:str):
+    json_path = os.path.join(PUBLIC_PATH, "json", name+".json")
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            response = json.load(f)
+        return response
+    except Exception:
+        return {}
+    
