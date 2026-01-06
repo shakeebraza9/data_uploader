@@ -21,11 +21,7 @@ class Action:
     API_ENDPOINT_VARIANT = f"{API_BASE_URL}/api/cruds/variant"
     
     token = ""
-    headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {token}"
-    }
+    
    
 
     @staticmethod
@@ -129,18 +125,64 @@ class Action:
     @staticmethod
     def getAuctionDetails(sheet_id,LoginToken):
         Action.token = LoginToken
-        print(Action.token)
-        exit()
+
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {LoginToken}"
+        }
         check = requests.get(
             f"{Action.API_ENDPOINT}?table_id={sheet_id}",
-            headers=Action.headers,
+            headers=headers,
             verify=False,
             timeout=30
         )
         check.raise_for_status()
         data = check.json().get("data", [])
         return data
+    
 
+    @staticmethod
+    def updateAuction(auction_db_id,payload,LoginToken):
+        Action.token = LoginToken
+
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {LoginToken}"
+        }
+
+        r = requests.post(
+            f"{Action.API_ENDPOINT}/{auction_db_id}",
+            json=payload,
+            headers=headers,
+            verify=False,
+            timeout=60
+        )
+        print(f"🔄 Updating auction sheet {auction_db_id}")
+      
+        return r
+
+    @staticmethod
+    def createAuction(payload,LoginToken):
+        Action.token = LoginToken
+
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {LoginToken}"
+        }
+
+        r = requests.post(
+                Action.API_ENDPOINT,
+                json=payload,
+                headers=headers,
+                verify=False,
+                timeout=60
+            )
+        print(f"🔄 Auction Created")
+      
+        return r
     
     
     @staticmethod
