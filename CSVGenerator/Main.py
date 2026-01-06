@@ -48,7 +48,7 @@ def Main():
                     df = pd.read_csv(src_path)
                     data = df.to_dict(orient="records") 
                     for key,value in enumerate(data):
-                        newitem = FieldSet(value)
+                        newitem = FieldSet(value,auction_house)
                         newData.append(newitem)
                     
                     newcsv = pd.DataFrame(newData)

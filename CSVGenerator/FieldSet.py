@@ -44,7 +44,7 @@ def to_int1(value, default=""):
 
 
 
-def FieldSet(data):
+def FieldSet(data,auction_house):
 
 
     def to_int(value, default=""):
@@ -58,13 +58,18 @@ def FieldSet(data):
             return float(value)
         except (TypeError, ValueError):
             return None
-
+    Variant =  ""   
+    match auction_house:
+        case "BCA" | "Manheim" | "Aston Barclay":
+            Variant = data.get("Derivative")
+        case _:
+             Variant = data.get("Variant")
     return {
         # Basic
         'title': data.get('Title'),
         "make_id": data.get("Make") or data.get("Manufacturer"),
         "model_id": data.get("Model"),
-        "variant_id": data.get("Variant") or data.get("Derivative"),
+        "variant_id": Variant or data.get("Variant"),
         'body_id': data.get('Body type') or data.get("Body Type"),
         'year': data.get('Year'),
         'center_id': data.get('Center'),
