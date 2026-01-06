@@ -16,9 +16,16 @@ class Action:
     LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD")
     API_ENDPOINT = f"{API_BASE_URL}/api/cruds/auctions"
     API_ENDPOINT_PLATEFROM = f"{API_BASE_URL}/api/cruds/platform"
-   
-
-
+    API_ENDPOINT_MAKE = f"{API_BASE_URL}/api/cruds/make"
+    API_ENDPOINT_MODEL = f"{API_BASE_URL}/api/cruds/model"
+    API_ENDPOINT_VARIANT = f"{API_BASE_URL}/api/cruds/variant"
+    
+    token = ""
+    headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}"
+    }
    
 
     @staticmethod
@@ -62,7 +69,80 @@ class Action:
         return None
     
     
+    @staticmethod
+    def getmake(LoginToken):
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {LoginToken}"
+        }
+  
+        response = requests.get(
+            Action.API_ENDPOINT_MAKE,
+            headers=headers,
+            verify=False,
+            timeout=30
+        )
+        
+        response.raise_for_status()
+        data = response.json().get("data", [])
+        return data
+    
+    @staticmethod
+    def getModel(LoginToken):
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {LoginToken}"
+        }
+  
+        response = requests.get(
+            Action.API_ENDPOINT_MODEL,
+            headers=headers,
+            verify=False,
+            timeout=30
+        )
+        
+        response.raise_for_status()
+        data = response.json().get("data", [])
+        return data
 
+    @staticmethod
+    def getVariant(LoginToken):
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {LoginToken}"
+        }
+  
+        response = requests.get(
+            Action.API_ENDPOINT_VARIANT,
+            headers=headers,
+            verify=False,
+            timeout=30
+        )
+        
+        response.raise_for_status()
+        data = response.json().get("data", [])
+        return data
+    
+    @staticmethod
+    def getAuctionDetails(sheet_id,LoginToken):
+        Action.token = LoginToken
+        print(Action.token)
+        exit()
+        check = requests.get(
+            f"{Action.API_ENDPOINT}?table_id={sheet_id}",
+            headers=Action.headers,
+            verify=False,
+            timeout=30
+        )
+        check.raise_for_status()
+        data = check.json().get("data", [])
+        return data
+
+    
+    
     @staticmethod
     def login_and_get_token():
         url = f"{Action.API_BASE_URL}/api/auth/login"

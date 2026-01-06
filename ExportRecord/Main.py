@@ -77,18 +77,8 @@ class Main:
 
         try:
 
-            check_url = f"{Main.API_ENDPOINT}?table_id={sheet_id}"
-            check = requests.get(
-                check_url,
-                headers=headers,
-                verify=False,
-                timeout=30
-            )
-
-            check.raise_for_status()
-            data = check.json().get("data", [])
-
-
+            data = Action.getAuctionDetails(sheet_id,token)
+            print(data)
             if data:
                 auction_db_id = data[0]["id"]
                 payload["_method"] = "PUT"
