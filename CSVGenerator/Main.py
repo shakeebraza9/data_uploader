@@ -2,20 +2,18 @@ import os
 import pandas as pd
 from CSVGenerator.FieldSet import FieldSet 
 from datetime import datetime
+import logging
+from config import AUCTIONS_DIR,AUCTION_OUTPUT_DIR
 
-from config import PUBLIC_PATH
-
-base_dir = r"D:\scrape"
-
-output_dir = PUBLIC_PATH +'\csv'
-os.makedirs(output_dir, exist_ok=True)
 
 
 
 
 def Main():
 
-    for root, dirs, files in os.walk(base_dir):
+    os.makedirs(AUCTION_OUTPUT_DIR, exist_ok=True)
+
+    for root, dirs, files in os.walk(AUCTIONS_DIR):
         final_csvs = [
             f for f in files
             if f.lower().endswith('.csv') and 'final' in f.lower() and f.lower() != 'final_barclay.csv'
@@ -37,11 +35,14 @@ def Main():
                     folder_desc = f"{chunks[0]}-" + "-".join(chunks[2:])
                 
                 folder_name = f"{formatted_date}_{auction_house}_{folder_desc}"
+                print(folder_name)
                 
                 for f in final_csvs:
                     src_path = os.path.join(root, f)
-                    dst_path = os.path.join(output_dir, f"{folder_name}.csv")
+                    dst_path = os.path.join(AUCTION_OUTPUT_DIR, f"{folder_name}.csv")
                     
+
+                  
                     
                     newData = []
                     df = pd.read_csv(src_path)

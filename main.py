@@ -1,3 +1,4 @@
+import logging
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -14,12 +15,23 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 
+# Log Configuration
+logging.basicConfig(
+    filename="error.log",
+    level=logging.ERROR,
+    format="%(asctime)s | %(levelname)s | %(message)s"
+)
 
 
 
-# Main()
-obj = ExportRecord()
-obj.Run()
+
+
+
+
+
+Main()
+# obj = ExportRecord()
+# obj.Run()
 
 # if __name__ == "__main__":
 
