@@ -7,12 +7,12 @@ from config import AUCTIONS_DIR,AUCTION_OUTPUT_DIR
 
 
 
-
+month="dec" 
 
 def Main():
 
     os.makedirs(AUCTION_OUTPUT_DIR, exist_ok=True)
-
+    count = 0 
     for root, dirs, files in os.walk(AUCTIONS_DIR):
         final_csvs = [
             f for f in files
@@ -24,6 +24,10 @@ def Main():
             if len(parts) >= 4:
 
                 date_str = parts[-3]
+      
+                
+                if date_str.lower().startswith(month) == False:
+                    continue
                 auction_house = parts[-2]
 
                 today = datetime.now()
@@ -45,7 +49,8 @@ def Main():
                     folder_desc = f"{chunks[0]}-" + "-".join(chunks[2:])
                 
                 folder_name = f"{formatted_date}_{auction_house}_{folder_desc}"
-                print(folder_name)
+                count += 1
+                print(f"{count}. {folder_name}")
                 
                 for f in final_csvs:
                     src_path = os.path.join(root, f)

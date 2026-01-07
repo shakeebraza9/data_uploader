@@ -10,7 +10,8 @@ PUBLIC_PATH = os.path.join(PROJECT_ROOT, 'public')
 LOG_FILE = "auction_error.log"
 GOOGLE_SHEET_LINK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY4fogSBMvwerj4JDlULq8UtsznV3Rd6OX5Bh8vimACCCOx93KlnRWAHSPplcKAB_SpK6CoGA7w4bR/pub?output=xlsx"
 
-AUCTIONS_DIR = r"\\192.168.18.57\Done Auction"
+# AUCTIONS_DIR = r"\\192.168.18.57\Done Auction"
+AUCTIONS_DIR = r"E:\Done Auction"
 
 AUCTION_OUTPUT_DIR = PUBLIC_PATH +'\\csv'
 

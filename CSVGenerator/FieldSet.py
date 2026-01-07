@@ -52,10 +52,10 @@ def to_float(value):
             return None
 
 
-def getVarient(Derivative,Variant,auction_house):
+def getVarient(Variant,Derivative,auction_house):
 
     match auction_house:
-        case "BCA" | "Manheim" | "Aston Barclay":
+        case "BCA" | "Aston Barclay":
             Val = Derivative
         case _:
              Val = Variant
@@ -69,7 +69,7 @@ def FieldSet(data,auction_house):
         'title': data.get('Title'),
         "make_id": data.get("Make") or data.get("Manufacturer"),
         "model_id": data.get("Model"),
-        "variant_id": getVarient(data.get("Variant"),data.get("Derivative"),auction_house)  ,
+        "variant_id": getVarient(data.get("Variant") or data.get("variant"),data.get("Derivative") or data.get("derivative") ,auction_house)  ,
         'body_id': data.get('Body type') or data.get("Body Type"),
         'year': data.get('Year'),
         'center_id': data.get('Center'),
