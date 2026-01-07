@@ -23,6 +23,8 @@ class Main:
 
     @staticmethod
     def getSheetsForUploading(LoginToken):
+
+
         result = []
 
         folder_path = os.path.join(PUBLIC_PATH, "csv")
@@ -39,6 +41,7 @@ class Main:
             sheet_id, center_name = parts[2].split("-", 1)
 
             platrfrom_id = Action.getPlatefromID(auction_house,LoginToken)
+            
 
             csv_path = os.path.join(folder_path, filename)
             rows = []
@@ -67,42 +70,22 @@ class Main:
     
     @staticmethod
     def post_or_update(payload, token):
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {token}"
-        }
 
         sheet_id = payload.get("id")
 
         try:
 
             data = Action.getAuctionDetails(sheet_id,token)
-            print(data)
+
             if data:
+              
                 auction_db_id = data[0]["id"]
                 payload["_method"] = "PUT"
-
-                print(f"🔄 Updating auction sheet {sheet_id}")
-
-                r = requests.post(
-                    f"{Main.API_ENDPOINT}/{auction_db_id}",
-                    json=payload,
-                    headers=headers,
-                    verify=False,
-                    timeout=60
-                )
+                r = Action.updateAuction(auction_db_id,payload,token)
 
             else:
-                print(f"🆕 Creating auction sheet {sheet_id}")
-
-                r = requests.post(
-                    Main.API_ENDPOINT,
-                    json=payload,
-                    headers=headers,
-                    verify=False,
-                    timeout=60
-                )
+    
+               r = Action.createAuction(payload,token)
 
             if r.status_code >= 400:
                 print(f"❌ API Error {r.status_code} on sheet {sheet_id}")
@@ -112,9 +95,11 @@ class Main:
                 return r.status_code, r.text
 
             print("✅ Success:", r.status_code)
+
             return r.status_code, r.text
 
         except Exception as e:
+            
             print("❌ Exception:", sheet_id)
             logging.error(f"Sheet:{sheet_id} , EXCEPTION:{str(e)}")
             return None, None
