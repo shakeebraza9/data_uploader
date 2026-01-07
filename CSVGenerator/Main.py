@@ -22,11 +22,21 @@ def Main():
         if final_csvs:
             parts = root.split(os.sep)
             if len(parts) >= 4:
-                date_str = parts[-3] 
-                current_year = datetime.now().year
-                dt = datetime.strptime(f"{date_str} {current_year}", "%b %d %Y")
-                formatted_date = dt.strftime("%d-%m-%Y")
+
+                date_str = parts[-3]
                 auction_house = parts[-2]
+
+                today = datetime.now()
+                current_year = today.year
+                dt = datetime.strptime(f"{date_str} {current_year}", "%b %d %Y")
+
+
+                future = "no"
+                if dt.date() > today.date():
+                    dt = datetime.strptime(f"{date_str} {current_year - 1}", "%b %d %Y")
+                    future = "no"
+
+                formatted_date = dt.strftime("%d-%m-%Y")
                 
 
                 folder_desc = parts[-1]
