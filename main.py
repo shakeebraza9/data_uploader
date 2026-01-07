@@ -29,9 +29,10 @@ logging.basicConfig(
 
 
 
-Main()
-# obj = ExportRecord()
-# obj.Run()
+# Main()
+
+obj = ExportRecord()
+obj.Run()
 
 # if __name__ == "__main__":
 

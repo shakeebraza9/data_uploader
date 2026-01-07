@@ -24,7 +24,8 @@ class Main:
     @staticmethod
     def getSheetsForUploading(LoginToken):
 
-
+        count = 0
+        limit = 2
         result = []
 
         folder_path = os.path.join(PUBLIC_PATH, "csv")
@@ -33,6 +34,10 @@ class Main:
         for filename in os.listdir(folder_path):
             if not filename.lower().endswith(".csv"):
                 continue
+
+            if count >= limit:
+                print('Done')
+                break
 
             name = os.path.splitext(filename)[0]
             parts = name.split("_")
@@ -54,7 +59,7 @@ class Main:
                     rows.append(mapped_row)
                     # print(rows)
 
-            result.append({
+            payload ={
                 "id": sheet_id,
                 "name": center_name,
                 "auction_date": auction_date,
@@ -62,9 +67,14 @@ class Main:
                 "auction_type": 2,
                 "status": "draft",
                 "payload": json.dumps(rows, ensure_ascii=False)
-            })
-        # print(result)
-        return result
+            }
+
+            
+            Main.post_or_update(payload,LoginToken)
+            count +=1
+            time.sleep(3)
+
+    
 
 
     
@@ -114,7 +124,7 @@ class Main:
         LoginToken = Action.login_and_get_token() 
         auctions = Main.getSheetsForUploading(LoginToken)
 
-        for auction in auctions:
+        # for auction in auctions:
 
-            Main.post_or_update(auction, LoginToken)
-            time.sleep(3)   
+        #     Main.post_or_update(auction, LoginToken)
+        #     time.sleep(3)   
