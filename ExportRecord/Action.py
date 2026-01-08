@@ -18,7 +18,7 @@ class Action:
     API_ENDPOINT_PLATEFROM = f"{API_BASE_URL}/api/cruds/platform"
     API_ENDPOINT_MAKE = f"{API_BASE_URL}/api/cruds/make"
     API_ENDPOINT_MODEL = f"{API_BASE_URL}/api/cruds/model"
-    API_ENDPOINT_VARIANT = f"{API_BASE_URL}/api/cruds/variant"
+    API_ENDPOINT_VARIANT = f"{API_BASE_URL}/api/cruds/variant?length=100000"
     
     token = ""
     
@@ -85,41 +85,28 @@ class Action:
         return data
     
     @staticmethod
-    def getModel(LoginToken):
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {LoginToken}"
-        }
-  
-        response = requests.get(
-            Action.API_ENDPOINT_MODEL,
-            headers=headers,
-            verify=False,
-            timeout=30
-        )
-        
-        response.raise_for_status()
-        data = response.json().get("data", [])
-        return data
-
-    @staticmethod
     def getVariant(LoginToken):
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": f"Bearer {LoginToken}"
         }
-  
+
         response = requests.get(
             Action.API_ENDPOINT_VARIANT,
             headers=headers,
             verify=False,
             timeout=30
         )
-        
+
         response.raise_for_status()
         data = response.json().get("data", [])
+        json_path = os.path.join(PUBLIC_PATH, "json", "webvariant.json")
+        os.makedirs(os.path.dirname(json_path), exist_ok=True)
+
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
         return data
     
     @staticmethod

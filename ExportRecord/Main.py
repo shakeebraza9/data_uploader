@@ -55,7 +55,7 @@ class Main:
                 reader = csv.DictReader(f)
                 for row in reader:
                     dataFeild = DataFomater(row)
-                    mapped_row = dataFeild.Render()
+                    mapped_row = dataFeild.Render(auction_house,LoginToken)
                     rows.append(mapped_row)
                     # print(rows)
 
@@ -122,8 +122,8 @@ class Main:
         DataPrefix.GenJSon()
 
         LoginToken = Action.login_and_get_token() 
+        Action.getVariant(LoginToken)
         auctions = Main.getSheetsForUploading(LoginToken)
-
         # for auction in auctions:
 
         #     Main.post_or_update(auction, LoginToken)

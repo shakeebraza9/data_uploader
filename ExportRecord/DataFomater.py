@@ -10,16 +10,21 @@ class DataFomater:
             
    
         
-    def Render(self):
+    def Render(self,auction_house,LoginToken):
 
         return {
         
             'title': self.data.get('title'),
-            'make_id': DataPrefix.SetMake(self.data.get("make_id")),
-            'model_id': DataPrefix.SetModel(self.data.get("make_id"),self.data.get("model_id"),self.data.get("variant_id")),
-            'variant_id': DataPrefix.SetVarient(self.data.get("make_id"),self.data.get("model_id"),self.data.get("variant_id")),
-            'body_id':DataPrefix.Bodydtype(self.data.get("body_id")) ,
-            'vehicle_id':DataPrefix.VehicleType(self.data.get("body_id")) ,
+            # 'make_id': DataPrefix.SetMake(self.data.get("make_id")),
+            # 'model_id': DataPrefix.SetModel(self.data.get("make_id"),self.data.get("model_id"),self.data.get("variant_id")),
+            # 'variant_id': DataPrefix.SetVarient(self.data.get("make_id"),self.data.get("model_id"),self.data.get("variant_id"),auction_house),
+            # 'body_id':DataPrefix.Bodydtype(self.data.get("body_id")) ,
+            # 'vehicle_id':DataPrefix.VehicleType(DataPrefix.Bodydtype(self.data.get("body_id"))) ,
+            'make_id': self.data.get("make_id"),
+            'model_id': self.data.get("model_id"),
+            'variant_id': self.data.get("variant_id"),
+            'body_id':self.data.get("body_id"),
+            'vehicle_id':None,
             'year': self.data.get('year'),
             'center_id': self.data.get('center_id'),
             'color': self.data.get('color'),
@@ -29,9 +34,11 @@ class DataFomater:
             # # Vehicle Specs
             'doors': self.data.get('doors'),
             'seats':self.data.get('seats'),
-            'fuel_type': DataPrefix.FuleType(self.data.get('fuel_type')),
+            # 'fuel_type': DataPrefix.FuleType(self.data.get('fuel_type')),
+            'fuel_type': self.data.get('fuel_type'),
             'fuel_details': self.data.get('fuel_type'),
-            'transmission': DataPrefix.TransmissionType(self.data.get('transmission')),
+            # 'transmission': DataPrefix.TransmissionType(self.data.get('transmission')),
+            'transmission': self.data.get('transmission'),
             'transmission_details': self.data.get('transmission'),
             'cc': self.data.get('cc'),
             'keys': self.data.get('keys'),

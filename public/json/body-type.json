@@ -82,5 +82,9 @@
     "folding": "Pop-up caravan",
     "medium bus": "Medium van",
     "crewcab van": "Large van",
-    "accessible minibus": "Wheelchair-adapted"
+    "accessible minibus": "Wheelchair-adapted",
+    "chassiscab": "Chassis Cab",
+    "crewcab pick-up": "Pickup-based SUV",
+    "crewcab tipper": "Tipper",
+    "window van": "Van"
 }

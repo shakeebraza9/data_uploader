@@ -3,7 +3,7 @@ from config import PUBLIC_PATH
 from config import slugify,getJSonPrefixFile
 import json
 import os,re
-
+from ExportRecord.CleanData import CleanData
 import pandas as pd
 class DataPrefix:
 
@@ -115,7 +115,7 @@ class DataPrefix:
         
   
         try:
-            # Remove Bodytype into model
+
             for body_type in body_map.keys():
                 pattern = rf"\b{re.escape(body_type)}\b"
                 key = re.sub(pattern, "", key, flags=re.IGNORECASE)
@@ -129,15 +129,19 @@ class DataPrefix:
         
         
     @staticmethod
-    def SetVarient(make: str, model: str, varient: str):
+    def SetVarient(make, model, varient, auction_house):
         if not varient:
             return varient
-        varient_map =getJSonPrefixFile("Variant")
-        key = varient.strip().lower()
-        
-  
-        try:
-            return varient_map.get(key, key)
 
-        except Exception:
+        try:
+            if auction_house == "BCA":
+                varient = CleanData.BcaClean(varient)  
+                # print(varient)
+
+            varient_map = getJSonPrefixFile("Variant")
+            key = varient.strip().lower()
+            return varient_map.get(key, varient)
+
+        except Exception as e:
+            print("Variant error:", e)
             return varient
