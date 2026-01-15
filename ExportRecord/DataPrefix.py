@@ -1,3 +1,4 @@
+from pydoc import text
 from config import GOOGLE_SHEET_LINK
 from config import PUBLIC_PATH 
 from config import slugify,getJSonPrefixFile
@@ -59,8 +60,17 @@ class DataPrefix:
         key = value.strip().lower()
         return reponse.get(key, value)
 
-        # except Exception:
-            # return value
+
+    @staticmethod
+    def SetBodytype(value: str, auction_house: str):
+            if not value:
+                return value
+
+            if auction_house.lower() == "manheim":
+                text = re.split(r'grade', value, flags=re.IGNORECASE)[0]
+                return text.strip()
+
+            return value
  
     @staticmethod
     def VehicleType(value: str):

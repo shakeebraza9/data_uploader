@@ -22,8 +22,15 @@ def Main():
             f for f in files
             if f.lower().endswith(".csv")
             and "final" in f.lower()
-            and f.lower() != "final_barclay.csv"
+            and f.lower() not in (
+                "final_barclay.csv",
+                "bca_live_data_merged_final.csv",
+                "bca_live_data_merged_final.csv",
+                "bca_merged_variants_final.csv",
+                "bca_merged_variants_final_cleaned.csv"
+            )
         ]
+
 
         if not final_csvs:
             continue

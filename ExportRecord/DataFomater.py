@@ -11,7 +11,9 @@ class DataFomater:
    
         
     def Render(self,auction_house,LoginToken):
-
+    
+        body_id=DataPrefix.SetBodytype(self.data.get("body_id"),auction_house)
+     
         return {
         
             'title': self.data.get('title'),
@@ -22,8 +24,9 @@ class DataFomater:
             # 'vehicle_id':DataPrefix.VehicleType(DataPrefix.Bodydtype(self.data.get("body_id"))) ,
             'make_id': self.data.get("make_id"),
             'model_id': self.data.get("model_id"),
-            'variant_id': self.data.get("variant_id"),
-            'body_id':self.data.get("body_id"),
+            'variant_id': "",
+            'derivative': self.data.get("variant_id"),
+            'body_id':body_id,
             'vehicle_id':None,
             'year': self.data.get('year'),
             'center_id': self.data.get('center_id'),

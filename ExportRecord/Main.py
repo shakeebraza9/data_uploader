@@ -25,7 +25,7 @@ class Main:
     def getSheetsForUploading(LoginToken):
 
         count = 0
-        limit = 2
+        limit = 1000000
         result = []
 
         folder_path = os.path.join(PUBLIC_PATH, "csv")
@@ -88,10 +88,10 @@ class Main:
             data = Action.getAuctionDetails(sheet_id,token)
 
             if data:
-              
-                auction_db_id = data[0]["id"]
-                payload["_method"] = "PUT"
-                r = Action.updateAuction(auction_db_id,payload,token)
+                print(f"{data[0]["id"]} Skip This Id")
+                # auction_db_id = data[0]["id"]
+                # payload["_method"] = "PUT"
+                # r = Action.updateAuction(auction_db_id,payload,token)
 
             else:
     
@@ -122,7 +122,7 @@ class Main:
         DataPrefix.GenJSon()
 
         LoginToken = Action.login_and_get_token() 
-        Action.getVariant(LoginToken)
+        # Action.getVariant(LoginToken)
         auctions = Main.getSheetsForUploading(LoginToken)
         # for auction in auctions:
 
