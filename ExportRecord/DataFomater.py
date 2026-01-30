@@ -74,6 +74,10 @@ class DataFomater:
             'service_notes': self.data.get('service_notes'),
             'vendor': self.data.get('vendor'),
             
+            'bidding_history': self.data.get('bidding_history'),
+            'last_bid': int(self.data.get('last_bid') or 0),
+            'bidding_status': self.data.get('bidding_status'),
+            
             # #  Condition & Features
             'grade': self.data.get('grade', ""),
             'tyres_condition': self.data.get('tyres_condition'),

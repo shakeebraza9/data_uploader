@@ -1,10 +1,10 @@
 import os
 import re,json
 
-# This gets the folder where config.py is (your real project root)
+
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# Global paths you can use anywhere
+
 PUBLIC_PATH = os.path.join(PROJECT_ROOT, 'public')
 
 LOG_FILE = "auction_error.log"
@@ -12,6 +12,7 @@ GOOGLE_SHEET_LINK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY4fogSBMv
 
 # AUCTIONS_DIR = r"\\192.168.18.57\Done Auction"
 AUCTIONS_DIR = r"E:\Done Auction"
+# AUCTIONS_DIR = r"D:\test\12-Dec"
 
 AUCTION_OUTPUT_DIR = PUBLIC_PATH +'\\csv'
 
@@ -20,8 +21,8 @@ AUCTION_OUTPUT_DIR = PUBLIC_PATH +'\\csv'
 def slugify(text: str):
     
     text = text.lower().strip()
-    text = re.sub(r"[^\w\s-]", "", text)   # remove special chars
-    text = re.sub(r"[\s_-]+", "-", text)   # spaces & underscores → dash
+    text = re.sub(r"[^\w\s-]", "", text)  
+    text = re.sub(r"[\s_-]+", "-", text)   
     return text.strip("-")
 
 

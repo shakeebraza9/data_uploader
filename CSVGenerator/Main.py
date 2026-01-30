@@ -27,13 +27,15 @@ def Main():
                 "bca_live_data_merged_final.csv",
                 "bca_live_data_merged_final.csv",
                 "bca_merged_variants_final.csv",
-                "bca_merged_variants_final_cleaned.csv"
+                "bca_merged_variants_final_cleaned.csv",
+                "CCA_LIVE_data_final.csv",
+                "CCg_LIVE_data_final.csv"
             )
         ]
 
-
         if not final_csvs:
             continue
+
 
         parts = root.split(os.sep)
         if len(parts) < 4:
@@ -41,6 +43,28 @@ def Main():
 
         date_str = parts[-3]   
         auction_house = parts[-2]  
+        if auction_house == "Central Car Auctions":
+            final_csvs = [
+                f for f in files
+                if f == "final_cca.csv"
+            ]
+            if not final_csvs:
+                continue
+        elif auction_house == "Aston Barclay":
+            final_csvs = [
+                f for f in files
+                if f == "Final_Barclay_cleaned.csv"
+            ]
+            if not final_csvs:
+                continue
+        elif auction_house == "City Auction Group":
+            final_csvs = [
+                f for f in files
+                if f == "final_cag.csv"
+            ]
+            if not final_csvs:
+                continue
+        print(final_csvs)
         folder_desc = parts[-1]
 
         today = datetime.now()

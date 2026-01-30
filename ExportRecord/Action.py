@@ -130,8 +130,9 @@ class Action:
     
 
     @staticmethod
-    def updateAuction(auction_db_id,payload,LoginToken):
+    def updateAuction(auction_db_id,payload,LoginToken,sheet_id):
         Action.token = LoginToken
+        payload.pop("status",None)
 
         headers = {
             "Accept": "application/json",
@@ -146,7 +147,7 @@ class Action:
             verify=False,
             timeout=60
         )
-        print(f"🔄 Updating auction sheet {auction_db_id}")
+        print(f"🔄 Updating auction sheet {sheet_id}")
       
         return r
 
@@ -170,7 +171,30 @@ class Action:
         print(f"🔄 Auction Created")
       
         return r
-    
+        
+    @staticmethod
+    def updatePublishColumn(payload,LoginToken,sheet_id):
+        Action.token = LoginToken
+        
+
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {LoginToken}"
+        }
+
+        r = requests.post(
+            f"{Action.API_ENDPOINT}/updatePublishColumn",
+            json=payload,
+            headers=headers,
+            verify=False,
+            timeout=60
+        )
+        print("Status Code:", r.status_code)
+        print("Response Text:", r.text)
+        print(f"🔄 Updating auction sheet {sheet_id}")
+      
+        return r
     
     @staticmethod
     def login_and_get_token():

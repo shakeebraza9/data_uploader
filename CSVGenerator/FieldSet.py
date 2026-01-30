@@ -1,4 +1,8 @@
 import re
+from config import PUBLIC_PATH,LOG_FILE,auctionNameNormalize
+import json
+import os
+import math
 
 def safe_int(value, default=""):
 
@@ -60,7 +64,43 @@ def getVarient(Variant,Derivative,auction_house):
         case _:
              Val = Variant
     return Val
+def get_any(data, *keys, default=None):
+    # normalize dictionary once
+    normalized = {
+        k.strip().lower().replace(" ", "_"): v
+        for k, v in data.items()
+    }
 
+    for key in keys:
+        k = key.strip().lower().replace(" ", "_")
+        if k in normalized and normalized[k] not in (None, "", " "):
+            return normalized[k]
+
+    return default
+def prefix(data):
+    path = os.path.join(PUBLIC_PATH, "json", "biddingStatus.json")
+
+    # null / nan / empty → Missing
+    if data is None:
+        return "Missing"
+
+    val = str(data).strip()
+    if val == "" or val.lower() == "nan":
+        return "Missing"
+
+    with open(path, "r", encoding="utf-8") as f:
+        status_map = json.load(f)
+
+    # normalize map keys
+    normalized_map = {
+        k.strip().lower(): v
+        for k, v in status_map.items()
+    }
+
+    # lower case match
+    return normalized_map.get(val.lower(), "Missing")
+
+    
 def FieldSet(data,auction_house):
 
 
@@ -96,13 +136,21 @@ def FieldSet(data,auction_house):
         # Bidding & Pricing
         'bidding_history': data.get('Bidding History'),
         'last_bid': to_int1(
-            data.get('Last Bid')
-            or data.get('LAST BID')
-            or data.get('Last bid')
-            or data.get('last_bid')
-            or data.get('Last Bid ')
+            get_any(
+                data,
+                "Last Bid",
+                "LAST BID",
+                "Last bid",
+                "last_bid",
+                "Last Bid "
+            )
         ),
-        'bidding_status': data.get('Bidding Status') or data.get("bidding_status") or data.get('Bidding status'),
+        'bidding_status': prefix(get_any(
+                data,
+                "Bidding Status",
+                "bidding_status",
+                "Bidding status"
+            )),
         'cap_new': safe_int(data.get('Cap New')),
         'cap_retail': safe_int(
             data.get('Cap Retail') or data.get('CAP retail')

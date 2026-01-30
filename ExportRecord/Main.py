@@ -65,12 +65,14 @@ class Main:
                 "auction_date": auction_date,
                 "platform_id": platrfrom_id,
                 "auction_type": 2,
-                "status": "draft",
+                "status": 1,
                 "payload": json.dumps(rows, ensure_ascii=False)
             }
 
             
-            Main.post_or_update(payload,LoginToken)
+            
+            # Main.post_or_update(payload,LoginToken)
+            Main.updatePublish(payload,LoginToken,sheet_id)
             count +=1
             time.sleep(3)
 
@@ -88,10 +90,10 @@ class Main:
             data = Action.getAuctionDetails(sheet_id,token)
 
             if data:
-                print(f"{data[0]["id"]} Skip This Id")
-                # auction_db_id = data[0]["id"]
-                # payload["_method"] = "PUT"
-                # r = Action.updateAuction(auction_db_id,payload,token)
+                # print(f"{data[0]["id"]} Skip This Id")
+                auction_db_id = data[0]["id"]
+                payload["_method"] = "PUT"
+                r = Action.updateAuction(auction_db_id,payload,token,sheet_id)
 
             else:
     
@@ -115,7 +117,22 @@ class Main:
             return None, None
 
 
-
+    @staticmethod
+    def updatePublish(payload,LoginToken,sheet_id):
+        try :
+            payloadData = payload.get("payload")
+            updatepayload ={
+            "table_id": sheet_id,
+            "payload": payloadData 
+            }
+            data = Action.updatePublishColumn(updatepayload,LoginToken,sheet_id)
+            print("hello")
+            print(data)
+        except Exception as e:
+            print("❌ Exception:", sheet_id)
+            logging.error(f"Sheet:{sheet_id} , EXCEPTION:{str(e)}")
+            return None, None
+    
     @staticmethod
     def Run():
 
